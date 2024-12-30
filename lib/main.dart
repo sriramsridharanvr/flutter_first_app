@@ -27,10 +27,30 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
+  var generatedPairs = <WordPair>[];
+  var currentIndex = -1; // Add this to track position
 
   void getNext() {
-    current = WordPair.random();
+    // If we're not at the end of existing pairs
+    if (currentIndex < generatedPairs.length - 1) {
+      currentIndex++;
+      current = generatedPairs[currentIndex];
+    } else {
+      // Generate new pair and add it
+      current = WordPair.random();
+      generatedPairs.add(current);
+      currentIndex = generatedPairs.length - 1;
+    }
     notifyListeners();
+  }
+
+  void getPrevious() {
+    // Only go back if we're not at the beginning
+    if (currentIndex > 0) {
+      currentIndex--;
+      current = generatedPairs[currentIndex];
+      notifyListeners();
+    }
   }
 
   var favorites = <WordPair>[];
@@ -125,9 +145,14 @@ class GeneratorPage extends StatelessWidget {
         children: [
           BigCard(pair: pair),
           SizedBox(height: 10),
-          Row(
+          Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              ElevatedButton(
+                  onPressed: () {
+                    appState.getPrevious();
+                  },
+                  child: Text("Previous")),
               ElevatedButton.icon(
                 onPressed: () {
                   appState.toggleFavorite();
@@ -196,7 +221,7 @@ class FavoritesPage extends StatelessWidget {
         for (var pair in appState.favorites)
           ListTile(
             leading: Icon(Icons.favorite),
-            title: Text(pair.asLowerCase),
+            title: Text("${pair.first} ${pair.second}"),
           ),
       ],
     );
