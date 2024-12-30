@@ -153,11 +153,6 @@ class GeneratorPage extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ElevatedButton(
-                  onPressed: () {
-                    appState.getPrevious();
-                  },
-                  child: Text("Previous")),
               ElevatedButton.icon(
                 onPressed: () {
                   appState.toggleFavorite();
@@ -165,12 +160,22 @@ class GeneratorPage extends StatelessWidget {
                 icon: Icon(icon),
                 label: Text('Like'),
               ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Next'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        appState.getPrevious();
+                      },
+                      child: Text("Previous")),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      appState.getNext();
+                    },
+                    child: Text('Next'),
+                  ),
+                ],
               ),
             ],
           ),
