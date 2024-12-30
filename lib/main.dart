@@ -63,6 +63,11 @@ class MyAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void removeFavorite(wordPair) {
+    favorites.remove(wordPair);
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -222,6 +227,12 @@ class FavoritesPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.favorite),
             title: Text("${pair.first} ${pair.second}"),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                appState.removeFavorite(pair);
+              },
+            ),
           ),
       ],
     );
